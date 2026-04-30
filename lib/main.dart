@@ -100,7 +100,17 @@ children: <Widget>[
       labelText: 'Tinggi Badan (cm)',
       border: OutlineInputBorder(),
     ),
-  ),// Jangan lupa koma atau kurung tutupnya
+  ),
+  const SizedBox(height: 16), // Jarak antar inputan agar tidak mepet
+TextField(
+  keyboardType: TextInputType.number,
+  decoration: InputDecoration(
+    labelText: 'Berat Badan (kg)',
+    hintText: 'Contoh: 65',
+    border: OutlineInputBorder(),
+    prefixIcon: Icon(Icons.monitor_weight), // Ikon timbangan berat badan
+  ),
+),// Jangan lupa koma atau kurung tutupnya
 ],
           
           // Column is also a layout widget. It takes a list of children and
