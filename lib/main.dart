@@ -58,16 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController tinggiController = TextEditingController();
   final TextEditingController beratController = TextEditingController();
   String hasilBMI = "";
+  String kategoriBMI = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('FitCheck App'),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
+   return Scaffold(
+  backgroundColor: Colors.black,
+  appBar: AppBar(
+    // ... isi AppBar Neon tadi ...
+  ),
+  body: SingleChildScrollView( // Cukup satu saja di sini
+    child: Padding( // Langsung masuk ke Padding
+      padding: const EdgeInsets.all(25.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -105,25 +107,34 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-               onPressed: () {
-                  // 1. Ambil data & ubah ke angka
+              onPressed: () {
+                  // 1. Ambil data dari controller DULU
                   double? tinggi = double.tryParse(tinggiController.text);
                   double? berat = double.tryParse(beratController.text);
 
+                  // 2. Baru cek validitas dan hitung
                   if (tinggi != null && berat != null && tinggi > 0) {
                     double tinggiMeter = tinggi / 100;
                     double bmi = berat / (tinggiMeter * tinggiMeter);
 
-                    // 2. Bungkus dengan setState agar layar berubah
                     setState(() {
                       hasilBMI = "BMI Kamu: ${bmi.toStringAsFixed(2)}";
+                      
+                      if (bmi < 18.5) {
+                        kategoriBMI = "Kurus";
+                      } else if (bmi >= 18.5 && bmi < 25) {
+                        kategoriBMI = "Normal (Ideal)";
+                      } else if (bmi >= 25 && bmi < 30) {
+                        kategoriBMI = "Overweight (Gemuk)";
+                      } else {
+                        kategoriBMI = "Obesitas";
+                      }
                     });
-
-                    // Tetap cetak di terminal buat jaga-jaga
-                    print("BMI Berhasil Dihitung: $hasilBMI");
+                    print("Hasil: $hasilBMI | Kategori: $kategoriBMI");
                   } else {
                     setState(() {
                       hasilBMI = "Input tidak valid!";
+                      kategoriBMI = "";
                     });
                   }
                 },
@@ -144,6 +155,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontSize: 24, 
                   fontWeight: FontWeight.bold, 
                   color: Colors.blueAccent
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                kategoriBMI,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange, // Warna orange biar jelas bedanya
                 ),
               ),
             ],
