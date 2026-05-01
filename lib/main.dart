@@ -54,6 +54,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // 🧩 Step 1: Buat controller buat "ngintip" isi TextField
+  final TextEditingController tinggiController = TextEditingController();
+  final TextEditingController beratController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  // 🧩 Step 2: Sambungkan controller ke TextField Tinggi
+                  controller: tinggiController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Tinggi Badan (cm)',
@@ -86,6 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextField(
+                  // 🧩 Step 2: Sambungkan controller ke TextField Berat
+                  controller: beratController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     labelText: 'Berat Badan (kg)',
@@ -97,7 +105,11 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  print("Tombol Hitung BMI ditekan!");
+                  // 🧩 Step 3: Ambil datanya dan munculkan di Console
+                  String tinggi = tinggiController.text;
+                  String berat = beratController.text;
+
+                  print("Hasil Input -> Tinggi: $tinggi, Berat: $berat");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
