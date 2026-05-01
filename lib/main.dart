@@ -64,9 +64,19 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
    return Scaffold(
   backgroundColor: Colors.black,
-  appBar: AppBar(
-    // ... isi AppBar Neon tadi ...
-  ),
+ appBar: AppBar(
+        title: const Text(
+          "FITCHECK", 
+          style: TextStyle(
+            color: Color(0xFFDEFF9A), // Ini si Hijau Stabilo-nya
+            fontWeight: FontWeight.bold, 
+            letterSpacing: 2
+          )
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        elevation: 0,
+      ),
   body: SingleChildScrollView( // Cukup satu saja di sini
     child: Padding( // Langsung masuk ke Padding
       padding: const EdgeInsets.all(25.0),
@@ -74,37 +84,49 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Text(
-                'Masukkan Data Tubuh',
-                style: TextStyle(fontSize: 20),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  // 🧩 Step 2: Sambungkan controller ke TextField Tinggi
-                  controller: tinggiController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Tinggi Badan (cm)',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.height),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TextField(
-                  // 🧩 Step 2: Sambungkan controller ke TextField Berat
-                  controller: beratController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Berat Badan (kg)',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.monitor_weight),
-                  ),
-                ),
-              ),
+  'Masukkan Data Tubuh',
+  style: TextStyle(
+    fontSize: 20, 
+    color: Colors.white, // Ini yang bikin tulisannya muncul terang
+    fontWeight: FontWeight.bold,
+  ),
+),
+              Container(
+  padding: const EdgeInsets.all(20),
+  decoration: BoxDecoration(
+    color: const Color(0xFF1E1E1E), // Abu-abu gelap premium
+    borderRadius: BorderRadius.circular(20),
+  ),
+  child: Column(
+    children: [
+      TextField(
+        controller: tinggiController,
+        keyboardType: TextInputType.number,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: "Tinggi Badan (cm)",
+          labelStyle: const TextStyle(color: Colors.grey),
+          prefixIcon: const Icon(Icons.height, color: Color(0xFFDEFF9A)), // Ikon warna neon
+          enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFDEFF9A))),
+        ),
+      ),
+      const SizedBox(height: 20),
+      TextField(
+        controller: beratController,
+        keyboardType: TextInputType.number,
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: "Berat Badan (kg)",
+          labelStyle: const TextStyle(color: Colors.grey),
+          prefixIcon: const Icon(Icons.monitor_weight, color: Color(0xFFDEFF9A)), // Ikon warna neon
+          enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFDEFF9A))),
+        ),
+      ),
+    ],
+  ),
+),
               const SizedBox(height: 30),
               ElevatedButton(
               onPressed: () {
@@ -138,25 +160,31 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(200, 50),
-                ),
-                child: const Text(
-                  'Hitung BMI',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+               style: ElevatedButton.styleFrom(
+  backgroundColor: const Color(0xFFDEFF9A), // Warna Hijau Stabilo
+  foregroundColor: Colors.black, // Teks jadi Hitam biar Sangar
+  minimumSize: const Size(double.infinity, 55), // Tombol jadi panjang & tebal
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  elevation: 5,
+),
+child: const Text(
+  'HITUNG BMI',
+  style: TextStyle(
+    fontWeight: FontWeight.bold, 
+    fontSize: 18, 
+    letterSpacing: 1.5
+  ),
+),
               ),
               const SizedBox(height: 20),
-              Text(
-                hasilBMI,
-                style: const TextStyle(
-                  fontSize: 24, 
-                  fontWeight: FontWeight.bold, 
-                  color: Colors.blueAccent
-                ),
-              ),
+             Text(
+  hasilBMI,
+  style: const TextStyle(
+    fontSize: 40, 
+    fontWeight: FontWeight.bold, 
+    color: Color(0xFFDEFF9A) // Biar angkanya nyala Hijau Stabilo juga!
+  ),
+),
               const SizedBox(height: 10),
               Text(
                 kategoriBMI,
