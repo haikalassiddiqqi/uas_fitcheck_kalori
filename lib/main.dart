@@ -57,6 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // 🧩 Step 1: Buat controller buat "ngintip" isi TextField
   final TextEditingController tinggiController = TextEditingController();
   final TextEditingController beratController = TextEditingController();
+  String hasilBMI = "";
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +105,27 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  // 🧩 Step 3: Ambil datanya dan munculkan di Console
-                  String tinggi = tinggiController.text;
-                  String berat = beratController.text;
+               onPressed: () {
+                  // 1. Ambil data & ubah ke angka
+                  double? tinggi = double.tryParse(tinggiController.text);
+                  double? berat = double.tryParse(beratController.text);
 
-                  print("Hasil Input -> Tinggi: $tinggi, Berat: $berat");
+                  if (tinggi != null && berat != null && tinggi > 0) {
+                    double tinggiMeter = tinggi / 100;
+                    double bmi = berat / (tinggiMeter * tinggiMeter);
+
+                    // 2. Bungkus dengan setState agar layar berubah
+                    setState(() {
+                      hasilBMI = "BMI Kamu: ${bmi.toStringAsFixed(2)}";
+                    });
+
+                    // Tetap cetak di terminal buat jaga-jaga
+                    print("BMI Berhasil Dihitung: $hasilBMI");
+                  } else {
+                    setState(() {
+                      hasilBMI = "Input tidak valid!";
+                    });
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -119,6 +135,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: const Text(
                   'Hitung BMI',
                   style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                hasilBMI,
+                style: const TextStyle(
+                  fontSize: 24, 
+                  fontWeight: FontWeight.bold, 
+                  color: Colors.blueAccent
                 ),
               ),
             ],
