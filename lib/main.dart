@@ -97,39 +97,50 @@ Color warnaKategori = Colors.white;
               Container(
   padding: const EdgeInsets.all(20),
   decoration: BoxDecoration(
-    color: const Color(0xFF1E1E1E), // Abu-abu gelap premium
+    color: const Color(0xFF1E1E1E),
     borderRadius: BorderRadius.circular(20),
   ),
   child: Column(
     children: [
+      // TextField Tinggi
       TextField(
         controller: tinggiController,
         keyboardType: TextInputType.number,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.height, color: Color(0xFFDEFF9A)),
           labelText: "Tinggi Badan (cm)",
           labelStyle: const TextStyle(color: Colors.grey),
-          prefixIcon: const Icon(Icons.height, color: Color(0xFFDEFF9A)), // Ikon warna neon
-          enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFDEFF9A))),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white12),
+          ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFDEFF9A)),
+          ),
         ),
       ),
-      const SizedBox(height: 20),
+      const SizedBox(height: 25),
+      // TextField Berat
       TextField(
         controller: beratController,
         keyboardType: TextInputType.number,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.monitor_weight_outlined, color: Color(0xFFDEFF9A)),
           labelText: "Berat Badan (kg)",
           labelStyle: const TextStyle(color: Colors.grey),
-          prefixIcon: const Icon(Icons.monitor_weight, color: Color(0xFFDEFF9A)), // Ikon warna neon
-          enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-          focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Color(0xFFDEFF9A))),
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white12),
+          ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xFFDEFF9A)),
+          ),
         ),
       ),
-    ],
-  ),
-),
+    ], // Penutup children (ini yang tadi hilang)
+  ), // Penutup Column
+), // Penutup Container
+  
               const SizedBox(height: 30),
               ElevatedButton(
               onPressed: () {
