@@ -60,6 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String hasilBMI = "";
   String kategoriBMI = "";
 
+  String pesanSaran = "";
+Color warnaKategori = Colors.white;
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -130,36 +133,50 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 30),
               ElevatedButton(
               onPressed: () {
-                  // 1. Ambil data dari controller DULU
-                  double? tinggi = double.tryParse(tinggiController.text);
-                  double? berat = double.tryParse(beratController.text);
+  // 1. Ambil data dari controller
+  double? tinggi = double.tryParse(tinggiController.text);
+  double? berat = double.tryParse(beratController.text);
 
-                  // 2. Baru cek validitas dan hitung
-                  if (tinggi != null && berat != null && tinggi > 0) {
-                    double tinggiMeter = tinggi / 100;
-                    double bmi = berat / (tinggiMeter * tinggiMeter);
+  // 2. Validasi Batas Manusiawi (Tinggi 50-250cm, Berat 10-250kg)
+  if (tinggi == null || berat == null || 
+      tinggi < 50 || tinggi > 250 || 
+      berat < 10 || berat > 250) {
+    
+    setState(() {
+      hasilBMI = "!"; // Tanda peringatan
+      kategoriBMI = "Data Tidak Valid ❌";
+      pesanSaran = "Pastikan tinggi (50-250 cm) dan berat (10-250 kg) diisi dengan benar ya!";
+      warnaKategori = Colors.redAccent;
+    });
+    return; // Berhenti di sini, jangan lanjut hitung
+  }
 
-                    setState(() {
-                      hasilBMI = "BMI Kamu: ${bmi.toStringAsFixed(2)}";
-                      
-                      if (bmi < 18.5) {
-                        kategoriBMI = "Kurus";
-                      } else if (bmi >= 18.5 && bmi < 25) {
-                        kategoriBMI = "Normal (Ideal)";
-                      } else if (bmi >= 25 && bmi < 30) {
-                        kategoriBMI = "Overweight (Gemuk)";
-                      } else {
-                        kategoriBMI = "Obesitas";
-                      }
-                    });
-                    print("Hasil: $hasilBMI | Kategori: $kategoriBMI");
-                  } else {
-                    setState(() {
-                      hasilBMI = "Input tidak valid!";
-                      kategoriBMI = "";
-                    });
-                  }
-                },
+  // 3. Jika valid, baru hitung
+  double tinggiMeter = tinggi / 100;
+  double bmi = berat / (tinggiMeter * tinggiMeter);
+
+  setState(() {
+    hasilBMI = bmi.toStringAsFixed(2);
+    
+    if (bmi < 18.5) {
+      kategoriBMI = "Underweight (Kurus) ⚠️";
+      pesanSaran = "Ayo tambah asupan protein dan kalori sehatmu! Semangat!";
+      warnaKategori = Colors.yellow;
+    } else if (bmi >= 18.5 && bmi < 25) {
+      kategoriBMI = "Normal (Ideal) 👍";
+      pesanSaran = "Keren banget! Pertahankan pola hidup sehatmu!";
+      warnaKategori = const Color(0xFFDEFF9A); // Hijau Neon
+    } else if (bmi >= 25 && bmi < 30) {
+      kategoriBMI = "Overweight (Gemuk) 🍎";
+      pesanSaran = "Coba kurangi gorengan & mulai rutin olahraga yuk!";
+      warnaKategori = Colors.orange;
+    } else {
+      kategoriBMI = "Obesity (Obesitas) 🚨";
+      pesanSaran = "Waspada! Konsultasikan pola makanmu dengan ahli.";
+      warnaKategori = Colors.red;
+    }
+  });
+},
                style: ElevatedButton.styleFrom(
   backgroundColor: const Color(0xFFDEFF9A), // Warna Hijau Stabilo
   foregroundColor: Colors.black, // Teks jadi Hitam biar Sangar
@@ -176,24 +193,40 @@ child: const Text(
   ),
 ),
               ),
-              const SizedBox(height: 20),
-             Text(
+             const SizedBox(height: 30), // Memberi jarak lebih lega
+const Text(
+  "HASIL BMI",
+  style: TextStyle(color: Colors.grey, fontSize: 16, letterSpacing: 2),
+),
+Text(
   hasilBMI,
-  style: const TextStyle(
-    fontSize: 40, 
+  style: TextStyle(
+    fontSize: 70, 
     fontWeight: FontWeight.bold, 
-    color: Color(0xFFDEFF9A) // Biar angkanya nyala Hijau Stabilo juga!
+    color: warnaKategori, // Warna ini akan berubah otomatis (Hijau/Merah)
   ),
 ),
-              const SizedBox(height: 10),
-              Text(
-                kategoriBMI,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange, // Warna orange biar jelas bedanya
-                ),
-              ),
+Text(
+  kategoriBMI,
+  style: TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: warnaKategori, // Senada dengan warna angka di atas
+  ),
+),
+const SizedBox(height: 12),
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 30),
+  child: Text(
+    pesanSaran,
+    textAlign: TextAlign.center,
+    style: const TextStyle(
+      fontSize: 16,
+      color: Colors.white70,
+      fontStyle: FontStyle.italic,
+    ),
+  ),
+),
             ],
           ),
         ),
