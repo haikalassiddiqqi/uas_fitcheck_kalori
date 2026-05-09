@@ -273,6 +273,22 @@ class MainMenu extends StatelessWidget {
               },
               child: menuCard("BMR CALCULATOR", "Hitung kebutuhan kalori harianmu", Icons.local_fire_department_rounded),
             ),
+            const SizedBox(height: 20),
+
+// KARTU GOAL TRACKER
+GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const GoalTrackerPage()),
+    );
+  },
+  child: menuCard(
+    "GOAL TRACKER", 
+    "Tentukan target cutting atau bulking", 
+    Icons.track_changes
+  ),
+),
           ],
         ),
       ),
@@ -469,3 +485,103 @@ Future.delayed(const Duration(seconds: 3), () {
     );
   }
 }
+class GoalTrackerPage extends StatefulWidget {
+  const GoalTrackerPage({super.key});
+
+  @override
+  State<GoalTrackerPage> createState() => _GoalTrackerPageState();
+}
+
+class _GoalTrackerPageState extends State<GoalTrackerPage> {
+  // Kita pakai angka standar kamu tadi sebagai basis (bisa diubah nanti)
+  double tdeeBasis = 2760; 
+  double tdeeTampil = 2760;
+  String goalAktif = "Maintenance";
+
+  void hitungTarget(String tipe) {
+    setState(() {
+      if (tipe == 'cutting') {
+        tdeeTampil = tdeeBasis - 500;
+        goalAktif = "Cutting (-500 kkal)";
+      } else if (tipe == 'bulking') {
+        tdeeTampil = tdeeBasis + 400;
+        goalAktif = "Bulking (+400 kkal)";
+      } else {
+        tdeeTampil = tdeeBasis;
+        goalAktif = "Maintenance";
+      }
+    });
+  }
+
+ @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        title: const Text("GOAL TRACKER"),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      // BUNGKUS DENGAN SCROLL BIAR GARIS KUNING-HITAM HILANG
+      body: SingleChildScrollView( 
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              // PANEL HASIL (ANGKA BESAR)
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E1E1E),
+                  borderRadius: BorderRadius.circular(25),
+                  border: Border.all(color: const Color(0xFFDEFF9A), width: 1),
+                ),
+                child: Column(
+                  children: [
+                    Text(goalAktif, style: const TextStyle(color: Colors.white70, fontSize: 16)),
+                    const SizedBox(height: 10),
+                    Text(
+                      "${tdeeTampil.toStringAsFixed(0)}",
+                      style: const TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Color(0xFFDEFF9A)),
+                    ),
+                    const Text("Kkal / Hari", style: TextStyle(color: Colors.white, fontSize: 18)),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              const Text("PILIH TARGET KAMU:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+
+              // TOMBOL PILIHAN TARGET
+              buildOptionButton("CUTTING (TURUN BB)", () => hitungTarget('cutting'), Colors.redAccent),
+              const SizedBox(height: 15),
+              buildOptionButton("MAINTENANCE (NORMAL)", () => hitungTarget('normal'), Colors.blueAccent),
+              const SizedBox(height: 15),
+              buildOptionButton("BULKING (NAIK BB)", () => hitungTarget('bulking'), Colors.orangeAccent),
+              
+              const SizedBox(height: 40), // Jarak aman di paling bawah
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // FUNGSI UNTUK BIKIN TOMBOL BIAR KODE DI ATAS RAPI
+  Widget buildOptionButton(String text, VoidCallback onPress, Color color) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        onPressed: onPress,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.grey[900],
+          side: BorderSide(color: color.withOpacity(0.5)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        ),
+        child: Text(text, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+      ),
+    );
+  }
+} // TUTUP CLASS PALING AKHIR
