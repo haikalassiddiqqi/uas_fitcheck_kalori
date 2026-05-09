@@ -230,6 +230,83 @@ Padding(
     );
   }
 }
+
+// --- HALAMAN MENU UTAMA ---
+class MainMenu extends StatelessWidget {
+  const MainMenu({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        title: const Text("FITCHECK DASHBOARD", style: TextStyle(letterSpacing: 2, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text("Pilih Fitur Kesehatan Kamu:", style: TextStyle(color: Colors.grey, fontSize: 16)),
+            const SizedBox(height: 30),
+            
+            // KARTU BMI
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(title: "BMI Calculator")));
+              },
+              child: menuCard("BMI CALCULATOR", "Cek status berat badan idealmu", Icons.monitor_weight_outlined),
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // KARTU BMR
+            GestureDetector(
+              onTap: () {
+                // Besok kita isi halaman BMR di sini
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Fitur BMR sedang kita rakit, Haikal! 😎")));
+              },
+              child: menuCard("BMR CALCULATOR", "Hitung kebutuhan kalori harianmu", Icons.local_fire_department_rounded),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Widget tambahan untuk bikin tampilan Kartu Menu lebih rapi
+  Widget menuCard(String title, String desc, IconData icon) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E1E),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFDEFF9A).withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 50, color: const Color(0xFFDEFF9A)),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
+                const SizedBox(height: 5),
+                Text(desc, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+              ],
+            ),
+          ),
+          const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 15),
+        ],
+      ),
+    );
+  }
+}
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -242,15 +319,17 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Beri jeda 3 detik sebelum masuk ke halaman utama
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const MyHomePage(title: 'FITCHECK')),
-        );
-      }
-    });
+   // Cari bagian ini di dalam SplashScreen kamu dan ubah:
+// Cari bagian ini di dalam SplashScreen kamu dan ubah:
+Future.delayed(const Duration(seconds: 3), () {
+  if (mounted) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainMenu()), // Ubah ke MainMenu
+    );
   }
+});
+}
 
   @override
   Widget build(BuildContext context) {
